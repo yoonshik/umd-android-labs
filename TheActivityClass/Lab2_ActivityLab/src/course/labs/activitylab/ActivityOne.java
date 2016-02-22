@@ -23,46 +23,46 @@ public class ActivityOne extends Activity {
 	// Lifecycle counters
 
 	// TODO:
-	// Create variables named
-	// mCreate, mRestart, mStart and mResume
-	// to count calls to onCreate(), onRestart(), onStart() and
-	// onResume(). These variables should not be defined as static.
+	private Integer mCreate=0, mRestart=0, mStart=0, mResume=0;
 
-	// You will need to increment these variables' values when their
-	// corresponding lifecycle methods get called.
-
-	// TODO: Create variables for each of the TextViews
-	// named mTvCreate, mTvRestart, mTvStart, mTvResume.
-	// for displaying the current count of each counter variable
+	TextView mTvCreate, mTvRestart, mTvStart, mTvResume;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_one);
 
-		// TODO: Assign the appropriate TextViews to the TextView variables
-		// Hint: Access the TextView by calling Activity's findViewById()
-		// textView1 = (TextView) findViewById(R.id.textView1);
+
+
+		++mCreate;
+
+		mTvCreate = (TextView) findViewById(R.id.create);
+		
+		final ActivityOne activityOne = this;
+
+		mTvCreate = (TextView) findViewById(R.id.create);
+		mTvRestart = (TextView) findViewById(R.id.restart);
+		mTvStart = (TextView) findViewById(R.id.start);
+		mTvResume = (TextView) findViewById(R.id.resume);
+
+		String[] strs = getString(R.string.onCreate).split(" ");
+		String str = strs[0] + " " + strs[1] + " " + mCreate;
+		mTvCreate.setText(str);
 
 		Button launchActivityTwoButton = (Button) findViewById(R.id.bLaunchActivityTwo);
 		launchActivityTwoButton.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
-				// TODO:
-				// Launch Activity Two
-				// Hint: use Context's startActivity() method
 
-				// Create an intent stating which Activity you would like to
-				// start
-				Intent intent = null;
 
-				// Launch the Activity using the intent
-
+				Intent intent = new Intent(activityOne, ActivityTwo.class);
+				startActivity(intent);
 			}
 		});
 
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "create " + mCreate);
 
 	}
 
@@ -71,32 +71,56 @@ public class ActivityOne extends Activity {
 	@Override
 	public void onStart() {
 		super.onStart();
+		++mStart;
+
+		String[] strs = getString(R.string.onStart).split(" ");
+		String str = strs[0] + " " + strs[1] + " " + mStart;
+		mTvStart.setText(str);
 
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "start " + mStart);
 	}
 
 	@Override
 	public void onResume() {
         super.onResume();
+		++mResume;
+
+		String[] strs = getString(R.string.onResume).split(" ");
+		String str = strs[0] + " " + strs[1] + " " + mResume;
+		mTvResume.setText(str);
+
+
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "resume " + mResume);
 	}
 
 	@Override
 	public void onPause() {
         super.onPause();
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "pause");
 	}
 
 	@Override
 	public void onStop() {
         super.onStop();
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "stop");
 	}
 
 	@Override
 	public void onRestart() {
         super.onRestart();
+		++mRestart;
+
+		String[] strs = getString(R.string.onRestart).split(" ");
+		String str = strs[0] + " " + strs[1] + " " + mRestart;
+		mTvRestart.setText(str);
+
+
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "restart " + str);
 
 	}
 
@@ -104,11 +128,15 @@ public class ActivityOne extends Activity {
 	public void onDestroy() {
         super.onDestroy();
 		// Emit LogCat message using the Log.i method
+		Log.i("ActivityOne", "destroy");
 	}
 
 	@Override
 	public void onSaveInstanceState(Bundle savedInstanceState) {
-
+		savedInstanceState.putInt(RESTART_KEY, mRestart);
+		savedInstanceState.putInt(RESUME_KEY, mResume);
+		savedInstanceState.putInt(START_KEY, mStart);
+		savedInstanceState.putInt(CREATE_KEY, mCreate);
 	}
 
 
